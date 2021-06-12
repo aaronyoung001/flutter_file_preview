@@ -4,11 +4,11 @@
 //
 //  Created by wenjunhuang on 2018/9/6.
 //
-
+#import "WebKit/WebKit.h"
 #import "FilePreviewVC.h"
 
 @interface FilePreviewVC ()
-@property (nonatomic, strong) UIWebView *myWebView;
+@property (nonatomic, strong) WKWebView *myWebView;
 @end
 
 @implementation FilePreviewVC
@@ -16,16 +16,33 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   [self setNeedsStatusBarAppearanceUpdate];
-  UIImage *backIcon = [UIImage imageWithContentsOfFile:self.backImgPath];
+    self.modalPresentationStyle=UIModalPresentationFullScreen;
+ // UIImage *backIcon = [UIImage imageWithContentsOfFile:self.backImgPath];
   UIButton *backBtn = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 10, 20)];
-  [backBtn setImage:backIcon forState:UIControlStateNormal];
+    [backBtn setTitle: @"返回" forState: UIControlStateNormal];
+    [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [backBtn.titleLabel setTextColor:[UIColor blackColor]];
+  //[backBtn setImage:backIcon forState:UIControlStateNormal];
   [backBtn addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
   self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
   self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
-  self.myWebView = [[UIWebView alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-  self.myWebView.scalesPageToFit = YES;//使文档的显示范围适合UIWebView的bounds
+    
+    WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+    configuration.selectionGranularity = WKSelectionGranularityDynamic;
+    configuration.allowsInlineMediaPlayback = YES;
+    
+    WKPreferences *preferences = [WKPreferences new];
+    //是否支持JavaScript
+    preferences.javaScriptEnabled = YES;
+    //不通过用户交互，是否可以打开窗口
+    preferences.javaScriptCanOpenWindowsAutomatically = YES;
+    configuration.preferences = preferences;
+    self.myWebView = [[WKWebView alloc] initWithFrame:[UIScreen mainScreen].bounds configuration:configuration];
+ // self.myWebView.scalesPageToFit = YES;//使文档的显示范围适合UIWebView的bounds
   [self.view addSubview:self.myWebView];
 }
+
+
 
 - (void)viewWillAppear:(BOOL)animated {
   NSURL *filePath = [NSURL URLWithString:self.url];
