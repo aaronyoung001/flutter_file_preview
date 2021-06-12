@@ -38,7 +38,6 @@
     preferences.javaScriptCanOpenWindowsAutomatically = YES;
     configuration.preferences = preferences;
     self.myWebView = [[WKWebView alloc] initWithFrame:[UIScreen mainScreen].bounds configuration:configuration];
- // self.myWebView.scalesPageToFit = YES;//使文档的显示范围适合UIWebView的bounds
   [self.view addSubview:self.myWebView];
 }
 
