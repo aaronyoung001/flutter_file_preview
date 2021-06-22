@@ -47,7 +47,7 @@
   //NSURL *filePath = [NSURL URLWithString:self.url];
   NSURL *filePath = [NSURL fileURLWithPath:self.url];
   NSURLRequest *request = [NSURLRequest requestWithURL: filePath];
-  [self.myWebView loadRequest:request];
+  [self.myWebView loadRequest:request]  ;
 }
 
 - (void)close {
